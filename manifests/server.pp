@@ -79,6 +79,8 @@ class puppetdb::server(
   $puppetdb_package        = $puppetdb::params::puppetdb_package,
   $puppetdb_version        = $puppetdb::params::puppetdb_version,
   $puppetdb_service        = $puppetdb::params::puppetdb_service,
+  $puppetdb_node_ttl       = $puppetdb::params::puppetdb_node_ttl,
+  $puppetdb_node_purge_ttl = $puppetdb::params::puppetdb_node_purge_ttl,
   $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
   $confdir                 = $puppetdb::params::confdir,
   $gc_interval             = $puppetdb::params::gc_interval,
@@ -102,6 +104,8 @@ class puppetdb::server(
     database_password => $database_password,
     database_name     => $database_name,
     confdir           => $confdir,
+    puppetdb_node_ttl       => $puppetdb_node_ttl,
+    puppetdb_node_purge_ttl => $puppetdb_node_purge_ttl,
     notify            => Service[$puppetdb_service],
   }
 
