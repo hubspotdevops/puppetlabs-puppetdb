@@ -38,21 +38,25 @@
 # TODO: expose more parameters
 #
 class puppetdb(
-  $database               = $puppetdb::params::database,
-  $puppetdb_package       = $puppetdb::params::puppetdb_package,
-  $puppetdb_version       = $puppetdb::params::puppetdb_version,
-  $puppetdb_service       = $puppetdb::params::puppetdb_service,
-  $confdir                = $puppetdb::params::confdir,
-  $manage_redhat_firewall = $puppetdb::params::manage_redhat_firewall,
+  $database                = $puppetdb::params::database,
+  $puppetdb_package        = $puppetdb::params::puppetdb_package,
+  $puppetdb_version        = $puppetdb::params::puppetdb_version,
+  $puppetdb_service        = $puppetdb::params::puppetdb_service,
+  $puppetdb_node_ttl       = $puppetdb::params::puppetdb_node_ttl,
+  $puppetdb_node_purge_ttl = $puppetdb::params::puppetdb_node_purge_ttl,
+  $confdir                 = $puppetdb::params::confdir,
+  $manage_redhat_firewall  = $puppetdb::params::manage_redhat_firewall,
 ) inherits puppetdb::params {
 
   class { 'puppetdb::server':
-    database               => $database,
-    puppetdb_package       => $puppetdb_package,
-    puppetdb_version       => $puppetdb_version,
-    puppetdb_service       => $puppetdb_service,
-    confdir                => $confdir,
-    manage_redhat_firewall => $manage_redhat_firewall,
+    database                => $database,
+    puppetdb_package        => $puppetdb_package,
+    puppetdb_version        => $puppetdb_version,
+    puppetdb_service        => $puppetdb_service,
+    puppetdb_node_ttl       => $puppetdb_node_ttl,
+    puppetdb_node_purge_ttl => $puppetdb_node_purge_ttl,
+    confdir                 => $confdir,
+    manage_redhat_firewall  => $manage_redhat_firewall,
   }
 
   if ($database == 'postgres') {
