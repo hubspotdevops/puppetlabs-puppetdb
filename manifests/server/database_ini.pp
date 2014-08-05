@@ -18,6 +18,8 @@ class puppetdb::server::database_ini(
   $confdir           = $puppetdb::params::confdir,
 ) inherits puppetdb::params {
 
+  anchor { 'puppetdb::server::database_ini::begin': }
+
   # Validate the database connection.  If we can't connect, we want to fail
   # and skip the rest of the configuration, so that we don't leave puppetdb
   # in a broken state.
@@ -28,6 +30,8 @@ class puppetdb::server::database_ini(
     database_username => $database_username,
     database_password => $database_password,
     database_name     => $database_name,
+    require           => Anchor['puppetdb::server::database_ini::begin'],
+    before            => Anchor['puppetdb::server::database_ini::end']
   }
 
   #Set the defaults
@@ -126,4 +130,6 @@ class puppetdb::server::database_ini(
     setting => 'conn-lifetime',
     value   => $conn_lifetime,
   }
+
+  anchor {'puppetdb::server::database_ini::end': }
 }
