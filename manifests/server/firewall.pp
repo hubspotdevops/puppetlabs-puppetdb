@@ -1,23 +1,23 @@
+# PRIVATE CLASS - do not use directly
 class puppetdb::server::firewall(
-    $port                   = $puppetdb::params::ssl_listen_port,
-    $manage_redhat_firewall = $puppetdb::params::manage_redhat_firewall,
+  $http_port      = $puppetdb::params::listen_port,
+  $open_http_port = $puppetdb::params::open_listen_port,
+  $ssl_port       = $puppetdb::params::ssl_listen_port,
+  $open_ssl_port  = $puppetdb::params::open_ssl_listen_port,
 ) inherits puppetdb::params {
-  # TODO: figure out a way to make this not platform-specific; debian and ubuntu
-  # have an out-of-the-box firewall configuration that seems trickier to manage.
-  # TODO: the firewall module should be able to handle this itself
-  if ($manage_redhat_firewall and $puppetdb::params::firewall_supported) {
+  include firewall
 
-    exec { 'puppetdb-persist-firewall':
-      command     => $puppetdb::params::persist_firewall_command,
-      refreshonly => true,
+  if ($open_http_port) {
+    firewall { "${http_port} accept - puppetdb":
+      port   => $http_port,
+      proto  => 'tcp',
+      action => 'accept',
     }
+  }
 
-    Firewall {
-      notify => Exec['puppetdb-persist-firewall']
-    }
-
-    firewall { "${port} accept - puppetdb":
-      port   => $port,
+  if ($open_ssl_port) {
+    firewall { "${ssl_port} accept - puppetdb":
+      port   => $ssl_port,
       proto  => 'tcp',
       action => 'accept',
     }
